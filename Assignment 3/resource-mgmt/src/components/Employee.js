@@ -9,7 +9,21 @@ const Employee = () => {
         if (isNaN(empData.age)) {
             alert("Age should be a numeric value")
         } else if (empData.name && empData.age && empData.dept && empData.desg && empData.gender && empData.date) {
-            setData([...data, empData])
+            if (edit) {
+                data.forEach( emp => {
+                    if (emp.id === empData.id) {
+                        emp.name = empData.name
+                        emp.age = empData.age
+                        emp.dept = empData.dept
+                        emp.desg = empData.desg
+                        emp.gender = empData.gender
+                        emp.date = empData.date
+                    }
+                })
+                handleEdit(false)
+            } else {
+                setData([...data, empData])
+            }
         } else {
             alert("Please fill all the fields and try saving again!")
         }
@@ -23,7 +37,9 @@ const Employee = () => {
                     <div className="modal-header pt-3 pb-2">
                         {edit ? <h5 className="modal-title" id="exampleModalCenterTitle">Edit Employee</h5> :
                         <h5 className="modal-title" id="exampleModalCenterTitle">Add Employee</h5>}
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => {
+                            handleEdit(false)
+                        }}>
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -38,7 +54,7 @@ const Employee = () => {
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="" className="mb-1">Gender</label>
-                                    <select className="form-control" id="exampleFormControlSelect1" onChange={(e) => {
+                                    <select className="form-control" id="exampleFormControlSelect1" value={empData.gender} onChange={(e) => {
                                         setEmpData({...empData, gender: e.target.value})
                                     }}>
                                         <option>Select</option>
@@ -60,7 +76,7 @@ const Employee = () => {
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="" className="mb-1">Department</label>
-                                    <select className="form-control" id="exampleFormControlSelect1" onChange={(e) => {
+                                    <select className="form-control" id="exampleFormControlSelect1" value={empData.dept} onChange={(e) => {
                                         setEmpData({...empData, dept: e.target.value})
                                     }}>
                                         <option>Select</option>
@@ -72,7 +88,7 @@ const Employee = () => {
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="" className="mb-1">Joining Date</label>
-                                    <input type="date" className="form-control" id="" placeholder="" onChange={(e) => {
+                                    <input type="date" className="form-control" id="" placeholder="" value={empData.date} onChange={(e) => {
                                         setEmpData({...empData, date: e.target.value})
                                     }}/>
                                 </div>
@@ -80,11 +96,10 @@ const Employee = () => {
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="button" className="btn btn-success btn-sm" data-dismiss="modal" onClick={() => {
-                            handleChange()
-                            edit ? handleEdit(!edit) : handleEdit(edit)
-                        }}>Save</button>
+                        <button type="button" className="btn btn-outline-danger btn-sm" data-dismiss="modal" onClick={() => {
+                            handleEdit(false)
+                        }}>Cancel</button>
+                        <button type="button" className="btn btn-success btn-sm" data-dismiss="modal" onClick={handleChange}>Save</button>
                     </div>
                 </div>
             </div>
